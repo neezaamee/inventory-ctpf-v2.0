@@ -11,6 +11,8 @@ use App\Livewire\SupplierComponent;
 use App\Livewire\GrnComponent;
 use App\Livewire\ReturnComponent;
 use App\Livewire\AuditLogComponent;
+use App\Livewire\UserComponent;
+use App\Livewire\ProfileComponent;
 
 // Guest login routes
 Route::get('/login', Login::class)->name('login')->middleware('guest');
@@ -29,6 +31,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/grn', GrnComponent::class)->name('grn.index');
     Route::get('/returns', ReturnComponent::class)->name('returns.index');
     Route::get('/audits', AuditLogComponent::class)->name('audits.index');
+    Route::get('/users', UserComponent::class)->name('users.index');
+    Route::get('/profile', ProfileComponent::class)->name('profile.index');
 
     // Secure logout handler
     Route::post('/logout', function () {

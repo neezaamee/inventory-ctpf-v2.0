@@ -191,6 +191,9 @@
                         {{ Auth::user()->name }} 
                         <span class="badge badge-ctpf-gold ms-1">{{ Auth::user()->roles->first()?->name ?? 'User' }}</span>
                     </span>
+                    <a href="{{ route('profile.index') }}" class="btn btn-sm btn-outline-light me-2 fw-bold text-white">
+                        <i class="bi bi-person-circle text-warning me-1"></i> Profile
+                    </a>
                     <form method="POST" action="{{ route('logout') }}" class="m-0">
                         @csrf
                         <button type="submit" class="btn btn-sm btn-outline-warning border-2 fw-bold">
@@ -247,6 +250,11 @@
                     <a href="{{ route('audits.index') }}" class="sidebar-link {{ Route::is('audits.index') ? 'active' : '' }}">
                         <i class="bi bi-journal-text"></i> Audit Logs
                     </a>
+                    @can('manage-users')
+                    <a href="{{ route('users.index') }}" class="sidebar-link {{ Route::is('users.index') ? 'active' : '' }}">
+                        <i class="bi bi-shield-lock"></i> User Management
+                    </a>
+                    @endcan
                     @role('Super Admin|Admin')
                     <a href="#" class="sidebar-link">
                         <i class="bi bi-gear"></i> System Settings

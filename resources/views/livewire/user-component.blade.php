@@ -54,6 +54,11 @@
                                             </div>
                                             <div>
                                                 <span>{{ $user->name }}</span>
+                                                @if($user->staff)
+                                                    <small class="text-muted d-block small" style="font-size: 0.75rem; font-weight: 500;">
+                                                        <i class="bi bi-person-badge text-success me-1"></i> Linked Profile: Belt {{ $user->staff->belt_no }} ({{ $user->staff->rank }})
+                                                    </small>
+                                                @endif
                                                 @if(auth()->id() == $user->id)
                                                     <span class="badge bg-success rounded-pill ms-1 small" style="font-size: 0.7rem;">Active Session</span>
                                                 @endif
@@ -142,6 +147,18 @@
                                         @endforeach
                                     </select>
                                     @error('selectedRole') <div class="invalid-feedback fw-semibold small text-danger">{{ $message }}</div> @enderror
+                                </div>
+
+                                <!-- Link to Warden Staff Profile -->
+                                <div class="col-12">
+                                    <label for="staff_id" class="form-label fw-semibold small text-muted">Link to Warden Staff Profile (Optional)</label>
+                                    <select wire:model="staff_id" id="staff_id" class="form-select border-secondary-subtle @error('staff_id') is-invalid @enderror">
+                                        <option value="">-- No Link (Pure Administration / Auditor) --</option>
+                                        @foreach($availableStaff as $staff)
+                                            <option value="{{ $staff->id }}">{{ $staff->full_name }} (Belt {{ $staff->belt_no }} • {{ $staff->rank }})</option>
+                                        @endforeach
+                                    </select>
+                                    @error('staff_id') <div class="invalid-feedback fw-semibold small text-danger">{{ $message }}</div> @enderror
                                 </div>
                             </div>
                         </div>

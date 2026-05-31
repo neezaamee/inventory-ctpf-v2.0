@@ -191,8 +191,8 @@
                         {{ Auth::user()->name }} 
                         <span class="badge badge-ctpf-gold ms-1">{{ Auth::user()->roles->first()?->name ?? 'User' }}</span>
                     </span>
-                    <a href="{{ route('profile.index') }}" class="btn btn-sm btn-outline-light me-2 fw-bold text-white">
-                        <i class="bi bi-person-circle text-warning me-1"></i> Profile
+                    <a href="{{ route('profile.index') }}" class="btn btn-sm btn-outline-warning me-2 fw-bold">
+                        <i class="bi bi-person-circle me-1"></i> Profile
                     </a>
                     <form method="POST" action="{{ route('logout') }}" class="m-0">
                         @csrf

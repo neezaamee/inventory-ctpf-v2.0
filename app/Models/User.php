@@ -12,12 +12,20 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use OwenIt\Auditing\Contracts\Auditable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'staff_id'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements Auditable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasRoles, \OwenIt\Auditing\Auditable;
+
+    /**
+     * Get the warden staff profile linked to this user.
+     */
+    public function staff()
+    {
+        return $this->belongsTo(Staff::class);
+    }
 
     /**
      * Get the attributes that should be cast.

@@ -20,6 +20,21 @@
             <div class="card ctpf-card shadow-sm h-100 mb-0">
                 <div class="ctpf-card-header"><i class="bi bi-person-fill-gear me-1"></i> Personal Profile Information</div>
                 <div class="card-body py-4">
+                    @if(auth()->user()->staff)
+                        <div class="alert alert-light border border-success-subtle p-3 rounded mb-4 d-flex align-items-center" style="background-color: #f6faf7;">
+                            <div class="p-2 bg-success text-white rounded-circle me-3 d-flex align-items-center justify-content-center" style="width: 48px; height: 48px; background-color: var(--ctpf-emerald) !important;">
+                                <i class="bi bi-person-vcard fs-4"></i>
+                            </div>
+                            <div>
+                                <small class="text-uppercase text-muted fw-bold font-monospace d-block" style="font-size: 0.7rem;">Official Warden Credentials</small>
+                                <h6 class="fw-bold text-success-emphasis mb-0">{{ auth()->user()->staff->rank }} (Belt #{{ auth()->user()->staff->belt_no }})</h6>
+                                <small class="text-secondary d-block mt-0.5" style="font-size: 0.8rem;">
+                                    <strong>Posting Location:</strong> {{ auth()->user()->staff->current_posting }} <br>
+                                    <strong>CNIC:</strong> {{ auth()->user()->staff->cnic }} • <strong>Phone:</strong> {{ auth()->user()->staff->phone_no }}
+                                </small>
+                            </div>
+                        </div>
+                    @endif
                     <form wire:submit.prevent="updateProfile">
                         <div class="mb-3">
                             <label for="profile_name" class="form-label fw-semibold small text-muted">Administrator Name</label>

@@ -33,6 +33,11 @@ class Staff extends Model implements Auditable
         return $this->hasMany(StockReturn::class);
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+
     public function getFullNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";

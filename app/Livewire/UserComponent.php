@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\User;
+use App\Models\Staff;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,7 @@ class UserComponent extends Component
     public $email = '';
     public $password = '';
     public $selectedRole = '';
+    public $staff_id = null;
 
     // Modal Control Flags
     public $isFormOpen = false;
@@ -37,6 +39,7 @@ class UserComponent extends Component
             'email' => 'required|email|max:100|unique:users,email,' . $this->userId,
             'password' => $passwordRule,
             'selectedRole' => 'required|exists:roles,name',
+            'staff_id' => 'nullable|exists:staff,id|unique:users,staff_id,' . $this->userId,
         ];
     }
 
@@ -64,6 +67,7 @@ class UserComponent extends Component
             $this->name = $user->name;
             $this->email = $user->email;
             $this->selectedRole = $user->roles->first()?->name ?? '';
+            $this->staff_id = $user->staff_id;
         }
 
         $this->isFormOpen = true;
@@ -82,6 +86,7 @@ class UserComponent extends Component
         $this->email = '';
         $this->password = '';
         $this->selectedRole = '';
+        $this->staff_id = null;
     }
 
     public function saveUser()
@@ -96,6 +101,7 @@ class UserComponent extends Component
             $data = [
                 'name' => $this->name,
                 'email' => $this->email,
+                'staff_id' => $this->staff_id ?: null,
             ];
 
             if ($this->password) {
@@ -152,7 +158,7 @@ class UserComponent extends Component
 
     public function render()
     {
-        $query = User::with('roles');
+        $query = User::with(['roles', 'staff']);
 
         if ($this->search) {
             $query->where(function ($q) {
@@ -164,9 +170,21 @@ class UserComponent extends Component
         $usersList = $query->orderBy('name', 'asc')->paginate(10);
         $rolesList = Role::orderBy('name', 'asc')->get();
 
+        // Fetch available Staff profiles that aren't already linked to another user
+        $availableStaff = Staff::where(function ($q) {
+            $q->whereDoesntHave('user');
+            if ($this->userId) {
+                $user = User::find($this->userId);
+                if ($user && $user->staff_id) {
+                    $q->orWhere('id', $user->staff_id);
+                }
+            }
+        })->orderBy('first_name', 'asc')->get();
+
         return view('livewire.user-component', [
             'usersList' => $usersList,
             'rolesList' => $rolesList,
+            'availableStaff' => $availableStaff,
         ])->layout('components.layouts.app');
     }
 }

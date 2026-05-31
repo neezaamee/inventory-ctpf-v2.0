@@ -39,7 +39,7 @@ class UserComponent extends Component
             'email' => 'required|email|max:100|unique:users,email,' . $this->userId,
             'password' => $passwordRule,
             'selectedRole' => 'required|exists:roles,name',
-            'staff_id' => 'nullable|exists:staff,id|unique:users,staff_id,' . $this->userId,
+            'staff_id' => 'required|exists:staff,id|unique:users,staff_id,' . $this->userId,
         ];
     }
 

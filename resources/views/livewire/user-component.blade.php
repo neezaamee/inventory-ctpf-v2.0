@@ -151,9 +151,9 @@
 
                                 <!-- Link to Warden Staff Profile -->
                                 <div class="col-12">
-                                    <label for="staff_id" class="form-label fw-semibold small text-muted">Link to Warden Staff Profile (Optional)</label>
-                                    <select wire:model="staff_id" id="staff_id" class="form-select border-secondary-subtle @error('staff_id') is-invalid @enderror">
-                                        <option value="">-- No Link (Pure Administration / Auditor) --</option>
+                                    <label for="staff_id" class="form-label fw-semibold small text-muted">Link to Warden Staff Profile <span class="text-danger">*</span></label>
+                                    <select wire:model="staff_id" id="staff_id" class="form-select border-secondary-subtle @error('staff_id') is-invalid @enderror" required>
+                                        <option value="">-- Select Warden Profile --</option>
                                         @foreach($availableStaff as $staff)
                                             <option value="{{ $staff->id }}">{{ $staff->full_name }} (Belt {{ $staff->belt_no }} • {{ $staff->rank }})</option>
                                         @endforeach

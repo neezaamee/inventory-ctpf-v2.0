@@ -31,6 +31,24 @@ class InventoryStockTest extends TestCase
     }
 
     /**
+     * Verify that users must be linked to a staff profile.
+     */
+    public function test_user_requires_staff_id_linkage(): void
+    {
+        $superAdmin = User::where('email', 'cpo@ctpf.gov.pk')->first();
+        $this->actingAs($superAdmin);
+        
+        \Livewire\Livewire::test(\App\Livewire\UserComponent::class)
+            ->set('name', 'New Administrator')
+            ->set('email', 'new.admin@ctpf.gov.pk')
+            ->set('password', 'password123')
+            ->set('selectedRole', 'Store Clerk')
+            ->set('staff_id', null) // Try to save without staff_id
+            ->call('saveUser')
+            ->assertHasErrors(['staff_id' => 'required']);
+    }
+
+    /**
      * Verify that CTPF warden registry profiles are successfully queried.
      */
     public function test_warden_registry_profiles_can_be_retrieved(): void
